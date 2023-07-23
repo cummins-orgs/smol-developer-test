@@ -1,0 +1,115 @@
+service: craigslist-scraper
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: us-east-1
+  profile: serverless-admin
+  environment:
+    PYTHONPATH: /var/task/src:/var/task/lib
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+
+package:
+  exclude:
+    - ./**
+  include:
+    - web_scraper/**
+
+functions:
+  scraper:
+    handler: web_scraper.web_scraper.spiders.craigslist_spider.CraigslistSpider
+    events:
+      - schedule: rate(12 hours)
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    zip: true
+    slim: true
+    noDeploy:
+      - docutils
+      - jmespath
+      - pip
+      - python-dateutil
+      - setuptools
+      - six
+      - urllib3
+      - botocore
+      - s3transfer
+      - boto3
+      - futures
+      - s3fs
+      - fsspec
+      - beautifulsoup4
+      - chardet
+      - idna
+      - requests
+      - soupsieve
+      - certifi
+      - lxml
+      - pytz
+      - numpy
+      - pandas
+      - scrapy
+      - zope.interface
+      - constantly
+      - incremental
+      - Automat
+      - hyperlink
+      - PyHamcrest
+      - Twisted
+      - protego
+      - PyDispatcher
+      - service_identity
+      - queuelib
+      - cssselect
+      - parsel
+      - w3lib
+      - pyOpenSSL
+      - cryptography
+      - itemadapter
+      - itemloaders
+      - jmespath
+      - itemadapter
+      - itemloaders
+      - pyasn1
+      - pyasn1-modules
+      - attrs
+      - pyasn1-modules
+      - service_identity
+      - cffi
+      - pycparser
+      - zope.interface
+      - constantly
+      - incremental
+      - Automat
+      - hyperlink
+      - PyHamcrest
+      - Twisted
+      - protego
+      - PyDispatcher
+      - queuelib
+      - cssselect
+      - parsel
+      - w3lib
+      - pyOpenSSL
+      - cryptography
+      - itemadapter
+      - itemloaders
+      - jmespath
+      - itemadapter
+      - itemloaders
+      - pyasn1
+      - pyasn1-modules
+      - attrs
+      - pyasn1-modules
+      - service_identity
+      - cffi
+      - pycparser
